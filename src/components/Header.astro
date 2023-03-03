@@ -1,0 +1,49 @@
+---
+// const path = Astro.url.pathname;
+import ayllukaypi from "../images/ayllukaypi.png";
+import ayllukaypiWebp from "../images/ayllukaypi.webp";
+import ayllukaypiAvif from "../images/ayllukaypi.avif";
+---
+
+<header
+   class="home fixed top-0 w-full z-30 transition duration-300 ease-out bg-[#062E51] shadow"
+>
+   <nav class="group navbar ">
+      <div
+         class="max-w-6xl mx-auto w-full max-lg:group-[.navbar]:block relative grow group-[.navbar]:flex group-[.navbar]:items-stretch"
+      >
+         <div class="flex items-stretch shrink-0 min-h-[4rem]">
+            <a
+               class="flex items-center relative grow-0 shrink-0 px-3"
+               href="/"
+            >
+               <picture>
+                  <source
+                     srcset={ayllukaypiAvif}
+                     type="image/avif"
+                  />
+                  <source
+                     srcset={ayllukaypiWebp}
+                     type="image/webp"
+                  />
+                  <img
+                     class="max-h-40"
+                     width="150"
+                     height="47"
+                     src={ayllukaypi}
+                     alt="Ayllu Kaypi - Aquí hogar, Aquí familia"
+                  />
+               </picture>
+            </a>
+
+           
+         </div>
+
+         
+      </div>
+   </nav>
+</header>
+
+<script>
+
+</script>

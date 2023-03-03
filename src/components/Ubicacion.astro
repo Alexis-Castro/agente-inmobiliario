@@ -1,0 +1,28 @@
+---
+import oficinas from "../images/oficinas.jpg";
+import oficinasWebp from "../images/oficinas.webp";
+import oficinasAvif from "../images/oficinas.avif";
+---
+
+<section class="py-12 px-6 lg:py-24 lg:px-14">
+   <div class="w-full max-w-6xl mx-auto relative">
+      <div class="block basis-0 flex-shrink flex-grow p-2 text-center mb-5">
+         <h2 class="text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-8">¿Dónde <span class="text-cyan-ak">trabajarás?</span></h2>
+         <p class="text-gray-50 text-lg">En nuestras oficinas ubicadas en Av. Santa Victoria #805 - Urb. Santa Victoria 14008 Chiclayo, Perú</p>
+      </div>
+
+      <div class="block basis-0 flex-shrink flex-grow p-2">
+         <figure class="relative">
+            <picture>
+               <source srcset={oficinasAvif} type="image/avif">
+               <source srcset={oficinasWebp} type="image/webp">
+               <img
+                  class="w-full rounded-md shadow-xl ring-8 ring-gray-700 ring-opacity-90 max-w-xl xl:h-full xl:max-w-5xl mx-auto"
+                  src={oficinas}
+                  alt="Ayllu Kaypi - Aquí hogar, Aquí familia"
+               />
+            </picture>
+         </figure>
+      </div>
+   </div>
+</section>

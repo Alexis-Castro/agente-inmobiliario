@@ -1,0 +1,92 @@
+---
+import sueldo from '../images/remuneracion.png'
+import comisiones from '../images/comision.png'
+import incentivos from '../images/incentivo.png'
+import capacitacion from '../images/capacitacion.png'
+
+---
+
+<section class="py-12 px-6 lg:py-24 lg:px-14">
+   <div class="w-full max-w-6xl mx-auto relative">
+      <div class="block basis-0 flex-shrink flex-grow p-2 text-center">
+         <h2 class="text-white text-3xl md:text-4xl lg:text-5xl font-bold mb-8">¿Qué <span class="text-cyan-ak">ofrecemos?</span></h2>
+      </div>
+
+      <div class="mx-auto w-full items-center md:flex md:flex-wrap justify-center gap-y-8 lg:gap-y-12" id="">
+
+         <div class="block basis-0 flex-shrink flex-grow p-2 md:flex-none md:w-5/12 xl:w-1/4 ">
+            <article class="rounded shadow-card shadow-azul border border-cyan-ak transition duration-300">
+               <div class="p-3 max-w-full relative">
+                  <div class="p-6 rounded">
+                     <figure class="mb-4 text-center">
+                        <img loading="lazy" width="85" height="85" src={sueldo} alt="Remuneración básica" class="mx-auto">
+                     </figure>
+                     <div class="text-center text-gray-50">
+                        <h3 class="text-xl is-5">Remuneración básica</h3>
+                     </div>
+                  </div>
+               </div>
+            </article>
+         </div>
+
+         <div class="block basis-0 flex-shrink flex-grow p-2 md:flex-none md:w-5/12 xl:w-1/4">
+            <article class="rounded shadow-card shadow-azul border border-cyan-ak transition duration-300">
+               <div class="p-3 max-w-full relative">
+                  <div class="p-6 rounded">
+                     <figure class="mb-4 text-center">
+                        <img loading="lazy" src={comisiones} width="85" height="85" alt="Excelentes comisiones" class="mx-auto">
+                     </figure>
+                     <div class="text-center text-gray-50">
+                        <h3 class="text-xl">Excelentes comisiones</h3>
+                     </div>
+                  </div>
+               </div>
+            </article>
+         </div>
+
+         <div class="block basis-0 flex-shrink flex-grow p-2 md:flex-none md:w-5/12 xl:w-1/4">
+            <article class="rounded shadow-card shadow-azul border border-cyan-ak transition duration-300">
+               <div class="p-3 max-w-full relative">
+                  <div class="p-6 rounded">
+                     <figure class="mb-4 text-center">
+                        <img loading="lazy" src={incentivos} width="85" height="85" alt="Premios e incentivos" class="mx-auto">
+                     </figure>
+                     <div class="text-center text-gray-50">
+                        <h3 class="text-xl">Premios e incentivos</h3>
+                     </div>
+                  </div>
+               </div>
+            </article>
+         </div>
+
+         <div class="block basis-0 flex-shrink flex-grow p-2 md:flex-none md:w-5/12 xl:w-1/4">
+            <article class="rounded shadow-card shadow-azul border border-cyan-ak transition duration-300">
+               <div class="p-3 max-w-full relative">
+                  <div class="p-6 rounded">
+                     <figure class="mb-4 text-center">
+                        <img loading="lazy" src={capacitacion} width="85" height="85" alt="Capacitación exclusiva" class="mx-auto">
+                     </figure>
+                     <div class="text-center text-gray-50">
+                        <h3 class="text-xl">Capacitación exclusiva</h3>
+                     </div>
+                  </div>
+               </div>
+            </article>
+         </div>
+
+      </div>
+   </div>
+</section>
+
+<style>
+   #beneficios-grid {
+      display: grid;
+      grid-template-columns: repeat( auto-fill,minmax( min(100%, 195px), 1fr) );
+   }
+   @media (min-width: 1024px) {
+      #beneficios-grid {
+         grid-template-columns: repeat( auto-fill,minmax(270px,1fr) );
+      }
+
+   }
+</style>
