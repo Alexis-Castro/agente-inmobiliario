@@ -1,12 +1,12 @@
 import { defineConfig } from 'astro/config'
 
 // https://astro.build/config
-import react from '@astrojs/react'
+// import react from '@astrojs/react'
 import tailwind from '@astrojs/tailwind'
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [react(), tailwind()],
-  site: 'https://astronaut.github.io',
-  base: '/agente-inmobiliario'
+  integrations: [tailwind()],
+  site: 'https://alexis-castro.github.io',
+  base: '/unete'
 })

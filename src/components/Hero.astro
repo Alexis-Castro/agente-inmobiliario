@@ -1,4 +1,5 @@
 ---
+import Form from "./Form.astro";
 ---
 
 <section class="pt-16 bg-homepage-hero-after" id="inicio">
@@ -55,119 +56,8 @@
             <div
                class="bg-[#020f1b] rounded-lg shadow-2xl sm:w-full sm:mx-auto sm:overflow-auto "
             >
-               <form class="px-4 py-8 sm:px-10 ">
-                  <div class="">
-                     <div
-                        class=" flex justify-center text-sm leading-5"
-                     >
-                        <h2 class="px-2 text-cyan-ak text-2xl lg:text-3xl font-bold mb-5">
-                           Trabaja con Nosotros
-                        </h2>
-                     </div>
-                  </div>
-                  <div class="mt-6">
-                     <div class="w-full space-y-8">
-                        <div class="md:flex items-center justify-between gap-x-3 space-y-8 md:space-y-0">
-                           <div class="w-full  group">
-                              <input
-                                 type="text"
-                                 name="nombres"
-                                 placeholder="Nombres"
-                                 class="rounded-lg flex-1 appearance-none border-2 w-full py-2.5 px-3 bg-[#010b15] border-cyan-900 transition text-gray-200 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-4 focus:ring-cyan-700 focus:border-transparent"
-                                 required
-                              />
-                           </div>
-                           <div class="w-full  group">
-                              <input
-                                 type="text"
-                                 name="apellidos"
-                                 placeholder="Apellidos"
-                                 class="rounded-lg flex-1 appearance-none border-2 w-full py-2.5 px-3 bg-[#010b15] border-cyan-900 transition text-gray-200 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-4 focus:ring-cyan-700 focus:border-transparent"
-                                 required
-                              />
-                           </div>
-
-                        </div>
-
-                        <div class="md:flex items-center justify-between gap-x-3 space-y-8 md:space-y-0">
-                           <div class="w-full  group">
-                              <input
-                              type="email"
-                              class="rounded-lg flex-1 appearance-none border-2 w-full py-2.5 px-3 bg-[#010b15] border-cyan-900 transition text-gray-200 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-4 focus:ring-cyan-700 focus:border-transparent"
-                              name="email"
-                              placeholder="Correo"
-                              required
-                              />
-                           </div>
-                           <div class="w-full  group">
-                              <input
-                                 type="tel"
-                                 class="rounded-lg flex-1 appearance-none border-2 w-full py-2.5 px-3 bg-[#010b15] border-cyan-900 transition text-gray-200 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-4 focus:ring-cyan-700 focus:border-transparent"
-                                 name="telefono"
-                                 placeholder="Celular"
-                                 required
-                              />
-                           </div>
-
-                        </div>
-
-                        <div class="w-full ">
-                           <input
-                              type="text"
-                              name="linkedln"
-                              placeholder="Opcional: enlace de Linkedln"
-                              class="rounded-lg flex-1 appearance-none border-2 w-full py-2.5 px-3 bg-[#010b15] border-cyan-900 transition text-gray-200 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-4 focus:ring-cyan-700 focus:border-transparent"
-                              required
-                           />
-                        </div>
-
-                        <div class="w-full ">
-                           <input class="w-full cursor-pointer border-2 border-cyan-900 rounded-lg text-gray-200 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:font-semibold file:bg-[#010b15] file:text-gray-50" aria-describedby="cv_help" id="cv" type="file" accept=".pdf" required>
-                        </div>
-
-                        <div class="lg:text-sm">
-                           <input
-                              id="terminos"
-                              type="checkbox"
-                              class="w-4 h-4 transition accent-cyan-ak text-cyan-ak rounded ring-offset-gray-800-0 border-b-2 bg-white focus:ring-cyan-ak focus:ring-2"
-                              required
-                           />
-                           <label for="terminos" class="ml-2 font-medium mr-1 text-sm text-gray-200">
-                              He leído y acepto los
-                              <a
-                                 href="https://ayllukaypi.pe/politicas_privacidad"
-                                 target="_blank"
-                                 rel="noopener noreferrer"
-                                 class="hover:underline cursor-pointer text-cyan-ak font-bold js-modal-trigger"
-                              >
-                                 Términos y Condiciones
-                              </a>
-                              y las
-                              <a
-                                 href="https://ayllukaypi.pe/terminos_condiciones"
-                                 target="_blank"
-                                 rel="noopener noreferrer"
-                                 class="hover:underline cursor-pointer text-cyan-ak font-bold js-modal-trigger"
-                              >
-                                 Políticas de Privacidad
-                              </a>
-                           </label>
-                        </div>
-                        
-                        <div>
-                           <span class="block w-full rounded-md shadow-sm">
-                              <button
-                                 type="submit"
-                                 class="py-3 px-4 bg-cyan-ak hover:bg-cyan-400 focus:ring-cyan-600 focus:ring-offset-indigo-200 text-azul w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-                              >
-                                 Postular
-                              </button>
-                           </span>
-                        </div>
-                     </div>
-                  </div>
-               </form>
-               
+               <Form />
+                  
             </div>
          </div>
       </div>

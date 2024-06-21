@@ -10,15 +10,16 @@ import "@fontsource/koho/700.css"
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="es" class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href="/unete/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
 	<body class="bg-[#010B15]">
+		<wc-toast></wc-toast>
 		<slot />
 	</body>
 </html>
@@ -36,3 +37,18 @@ import "@fontsource/koho/700.css"
 			Bitstream Vera Sans Mono, Courier New, monospace;
 	} */
 </style>
+
+<script >
+   const btnPostula = document.querySelector("#btnPostula");
+
+   btnPostula.addEventListener("click", clickHandler);
+
+   function clickHandler(e) {
+      e.preventDefault();
+
+      const href = this.getAttribute("href");
+      document.querySelector(href).scrollIntoView({
+         behavior: "smooth",
+      });
+   }
+</script>
