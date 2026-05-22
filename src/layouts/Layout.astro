@@ -1,49 +1,37 @@
 ---
 export interface Props {
-	title: string;
+   title: string;
 }
 
 const { title } = Astro.props;
-import "@fontsource/koho"
-import "@fontsource/koho/500.css"
-import "@fontsource/koho/700.css"
+// import "@fontsource/koho"
+import "@fontsource/koho/500.css";
+import "@fontsource/koho/700.css";
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es" class="scroll-smooth">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/unete/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body class="bg-[#010B15]">
-		<wc-toast></wc-toast>
-		<slot />
-	</body>
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width" />
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      <!-- <meta name="generator" content={Astro.generator} /> -->
+      <title>{title}</title>
+   </head>
+   <body class="bg-[#010B15]">
+      <wc-toast></wc-toast>
+      <slot />
+   </body>
 </html>
-<style is:global>
-	/* :root {
-		--accent: 124, 58, 237;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
-	}
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	} */
-</style>
 
-<script >
-   const btnPostula = document.querySelector("#btnPostula");
+<script>
+   const btnPostula = document.querySelector(
+      "#btnPostula",
+   ) as HTMLAnchorElement;
 
    btnPostula.addEventListener("click", clickHandler);
 
-   function clickHandler(e) {
+   function clickHandler(this: any, e: { preventDefault: () => void }) {
       e.preventDefault();
 
       const href = this.getAttribute("href");
