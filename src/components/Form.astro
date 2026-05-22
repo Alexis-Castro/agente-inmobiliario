@@ -1,4 +1,5 @@
 ---
+
 ---
 
 <form class="px-4 py-8 sm:px-10" id="formulario" enctype="multipart/form-data">
@@ -12,8 +13,7 @@
    <div class="mt-6">
       <div class="w-full space-y-8">
          <div
-            class="md:flex items-center justify-between gap-x-3 space-y-8 md:space-y-0"
-         >
+            class="md:flex items-center justify-between gap-x-3 space-y-8 md:space-y-0">
             <div class="w-full group">
                <input
                   type="text"
@@ -35,8 +35,7 @@
          </div>
 
          <div
-            class="md:flex items-center justify-between gap-x-3 space-y-8 md:space-y-0"
-         >
+            class="md:flex items-center justify-between gap-x-3 space-y-8 md:space-y-0">
             <div class="w-full group">
                <input
                   type="email"
@@ -71,11 +70,12 @@
             <input
                class="w-full cursor-pointer border-2 border-cyan-900 rounded-lg text-gray-200 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:font-semibold file:bg-[#010b15] file:text-gray-50"
                aria-describedby="cv_help"
+               placeholder="Cargar CV"
+               aria-label="Cargar CV"
                id="archivo"
                name="archivo"
                type="file"
                accept=".pdf"
-               required
             />
          </div>
 
@@ -88,24 +88,21 @@
             />
             <label
                for="terminos"
-               class="ml-2 font-medium mr-1 text-sm text-gray-200"
-            >
+               class="ml-2 font-medium mr-1 text-sm text-gray-200">
                He leído y acepto los
-               <a
-                  href="https://ayllukaypi.pe/politicas_privacidad"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="hover:underline cursor-pointer text-cyan-ak font-bold js-modal-trigger"
-               >
-                  Términos y Condiciones
-               </a>
-               y las
                <a
                   href="https://ayllukaypi.pe/terminos_condiciones"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="hover:underline cursor-pointer text-cyan-ak font-bold js-modal-trigger"
-               >
+                  class="hover:underline cursor-pointer text-cyan-ak font-bold js-modal-trigger">
+                  Términos y Condiciones
+               </a>
+               y las
+               <a
+                  href="https://ayllukaypi.pe/politicas_privacidad"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hover:underline cursor-pointer text-cyan-ak font-bold js-modal-trigger">
                   Políticas de Privacidad
                </a>
             </label>
@@ -116,15 +113,13 @@
                <button
                   type="submit"
                   id="button-submit"
-                  class="py-3 px-4 bg-cyan-ak hover:bg-cyan-400 focus:ring-cyan-600 focus:ring-offset-indigo-200 text-azul w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg flex items-center justify-center"
-               >
+                  class="py-3 px-4 bg-cyan-ak hover:bg-cyan-400 focus:ring-cyan-600 focus:ring-offset-indigo-200 text-azul w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg flex items-center justify-center">
                   <svg
                      role="status"
                      class="mr-3 w-5 h-5 text-azul animate-spin hidden"
                      viewBox="0 0 100 101"
                      fill="none"
-                     xmlns="http://www.w3.org/2000/svg"
-                  >
+                     xmlns="http://www.w3.org/2000/svg">
                      <path
                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
                         fill="#E5E7EB"></path>
@@ -141,7 +136,7 @@
 </form>
 
 <script>
-   import axios from "axios";
+   // import axios from "axios";
    import { toast } from "https://cdn.skypack.dev/wc-toast";
 
    const form = document.querySelector("#formulario");
@@ -149,14 +144,12 @@
    const buttonSubmit = document.querySelector("#button-submit");
    const svg = document.querySelector("#button-submit svg");
 
-   
-
    form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const datos = new FormData(form);
       const archivos = archivo.files;
-      
+
       datos.append("archivo", archivos[0]);
 
       buttonSubmit.setAttribute("disabled", "true");
@@ -168,35 +161,33 @@
       // }
 
       try {
-         const response = await axios.post(
-            "http://localhost/web_ayllukaypi_tailwind/contacto/agente/",
-            datos
-         );
-         // console.log(response);
+         // const response = await axios.post(
+         //    "http://localhost/web_ayllukaypi_tailwind/contacto/agente/",
+         //    datos,
+         // );
+         console.log(datos);
 
-         if (response.data == "El archivo se cargó con éxito") {
+         // if (response.data == "El archivo se cargó con éxito") {
+         //    buttonSubmit.removeAttribute("disabled");
+         //    buttonSubmit.classList.remove("opacity-70", "cursor-not-allowed");
+         //    svg.classList.add("hidden");
 
-            buttonSubmit.removeAttribute('disabled')
-            buttonSubmit.classList.remove("opacity-70", "cursor-not-allowed");
-            svg.classList.add('hidden')
-
-            toast("¡Te has postulado correctamente!", {
-               icon: {
-                  type: "success",
-               },
-            });
-            form.reset();
-         }
-
+         //    toast("¡Te has postulado correctamente!", {
+         //       icon: {
+         //          type: "success",
+         //       },
+         //    });
+         //    form.reset();
+         // }
       } catch (error) {
-         console.log(error);
+         console.error(error);
          toast(
             "Ha ocurrido un error inesperado, intentalo nuevamente o recarga la página",
             {
                icon: {
                   type: "error",
                },
-            }
+            },
          );
       }
    });
@@ -205,10 +196,9 @@
    //    try {
    //       new URL(miurl);
    //       return true;
-      
+
    //    } catch (err) {
    //       return false;
    //    }
    // }
-
 </script>
