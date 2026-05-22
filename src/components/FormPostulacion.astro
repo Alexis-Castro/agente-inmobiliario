@@ -1,0 +1,818 @@
+---
+// FormPostulacion.astro
+// Cambia a false cuando estés en producción real
+const IS_DEMO_MODE = true;
+---
+
+<section class="form-wrapper">
+   <div class="form-card">
+      <h2 class="form-title">Trabaja con Nosotros</h2>
+
+      {
+         IS_DEMO_MODE && (
+            <div class="demo-banner">
+               <span class="demo-icon">🧪</span>
+               <span>Modo demostración — los datos no se envían</span>
+            </div>
+         )
+      }
+
+      <form id="postulacion-form" novalidate>
+         <div class="form-row">
+            <div class="field-group">
+               <input
+                  type="text"
+                  id="nombres"
+                  name="nombres"
+                  placeholder="Nombres"
+                  autocomplete="given-name"
+               />
+               <span class="field-error" id="error-nombres"></span>
+            </div>
+
+            <div class="field-group">
+               <input
+                  type="text"
+                  id="apellidos"
+                  name="apellidos"
+                  placeholder="Apellidos"
+                  autocomplete="family-name"
+               />
+               <span class="field-error" id="error-apellidos"></span>
+            </div>
+         </div>
+
+         <div class="form-row">
+            <div class="field-group">
+               <input
+                  type="email"
+                  id="correo"
+                  name="correo"
+                  placeholder="Correo"
+                  autocomplete="email"
+               />
+               <span class="field-error" id="error-correo"></span>
+            </div>
+
+            <div class="field-group">
+               <input
+                  type="tel"
+                  id="celular"
+                  name="celular"
+                  placeholder="Celular"
+                  autocomplete="tel"
+               />
+               <span class="field-error" id="error-celular"></span>
+            </div>
+         </div>
+
+         <div class="field-group full-width">
+            <input
+               type="url"
+               id="linkedin"
+               name="linkedin"
+               placeholder="Opcional: enlace de LinkedIn"
+               autocomplete="url"
+            />
+            <span class="field-error" id="error-linkedin"></span>
+         </div>
+
+         <div class="field-group full-width">
+            <label class="file-label" for="cv">
+               <span class="file-btn">Seleccionar archivo</span>
+               <span class="file-name" id="file-name-display"
+                  >Ningún archivo seleccionado</span
+               >
+               <input
+                  type="file"
+                  id="cv"
+                  name="cv"
+                  accept=".pdf,.doc,.docx"
+                  class="file-input-hidden"
+               />
+            </label>
+            <span class="field-error" id="error-cv"></span>
+            <span class="field-hint">PDF, DOC o DOCX · máximo 5 MB</span>
+         </div>
+
+         <div class="field-group full-width checkbox-group">
+            <label class="checkbox-label">
+               <input type="checkbox" id="terminos" name="terminos" />
+               <span class="checkbox-custom"></span>
+               <span class="checkbox-text">
+                  He leído y acepto los
+                  <a href="#" class="link-terms">Términos y Condiciones</a>
+                  y las
+                  <a href="#" class="link-terms">Políticas de Privacidad</a>
+               </span>
+            </label>
+            <span class="field-error" id="error-terminos"></span>
+         </div>
+
+         <button type="submit" class="btn-postular" id="btn-submit">
+            <span class="btn-text">Postular</span>
+            <span class="btn-loading" aria-hidden="true">Enviando…</span>
+         </button>
+      </form>
+
+      <!-- Modal de éxito (demo o real) -->
+      <div class="success-overlay" id="success-overlay" aria-hidden="true">
+         <div class="success-card">
+            <div class="success-icon">✓</div>
+            <h3 id="success-title">¡Postulación enviada!</h3>
+            <p id="success-message">
+               Nos pondremos en contacto contigo pronto.
+            </p>
+            <button class="btn-reset" id="btn-reset"
+               >Volver al formulario</button
+            >
+         </div>
+      </div>
+   </div>
+</section>
+
+<style>
+   /* ── Variables ── */
+   :root {
+      --cyan: #00e5c8;
+      --cyan-dim: rgba(0, 229, 200, 0.15);
+      --cyan-glow: rgba(0, 229, 200, 0.35);
+      --bg-card: #0f1c2e;
+      --bg-input: #0a1422;
+      --border: rgba(0, 229, 200, 0.25);
+      --border-focus: #00e5c8;
+      --border-error: #ff4d6a;
+      --text-main: #e8f4f2;
+      --text-muted: rgba(232, 244, 242, 0.45);
+      --error-color: #ff4d6a;
+      --radius: 8px;
+      --transition: 0.2s ease;
+   }
+
+   /* ── Wrapper ── */
+   .form-wrapper {
+      /* display: flex; */
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 0;
+      /* background: radial-gradient(ellipse at 30% 20%, #0a2540 0%, #060e1a 60%); */
+      /* font-family: "Segoe UI", system-ui, sans-serif; */
+   }
+
+   .form-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 580px;
+      box-shadow:
+         0 0 40px rgba(0, 229, 200, 0.07),
+         0 20px 60px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+   }
+
+   /* ── Título ── */
+   .form-title {
+      text-align: center;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--cyan);
+      margin: 0 0 1.75rem;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 20px var(--cyan-glow);
+   }
+
+   /* ── Banner demo ── */
+   .demo-banner {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 200, 0, 0.08);
+      border: 1px solid rgba(255, 200, 0, 0.25);
+      border-radius: var(--radius);
+      padding: 0.6rem 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.82rem;
+      color: #ffd166;
+   }
+   .demo-icon {
+      font-size: 1rem;
+   }
+
+   /* ── Layout filas ── */
+   form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+   }
+
+   .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+   }
+
+   @media (max-width: 480px) {
+      .form-row {
+         grid-template-columns: 1fr;
+      }
+      .form-card {
+         padding: 2rem 1.25rem;
+      }
+   }
+
+   /* ── Grupos de campo ── */
+   .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+   }
+   .full-width {
+      grid-column: 1 / -1;
+   }
+
+   /* ── Inputs ── */
+   input[type="text"],
+   input[type="email"],
+   input[type="tel"],
+   input[type="url"] {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-main);
+      font-size: 0.92rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition:
+         border-color var(--transition),
+         box-shadow var(--transition);
+      width: 100%;
+      box-sizing: border-box;
+   }
+
+   input::placeholder {
+      color: var(--text-muted);
+   }
+
+   input:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px var(--cyan-dim);
+   }
+
+   input.is-error {
+      border-color: var(--border-error);
+      box-shadow: 0 0 0 3px rgba(255, 77, 106, 0.12);
+   }
+
+   input.is-valid {
+      border-color: rgba(0, 229, 200, 0.6);
+   }
+
+   /* ── Errores y hints ── */
+   .field-error {
+      font-size: 0.78rem;
+      color: var(--error-color);
+      min-height: 1em;
+      display: block;
+      padding-left: 2px;
+   }
+
+   .field-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding-left: 2px;
+   }
+
+   /* ── File input ── */
+   .file-input-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      overflow: hidden;
+   }
+
+   .file-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.6rem 0.75rem;
+      cursor: pointer;
+      transition: border-color var(--transition);
+   }
+
+   .file-label:hover {
+      border-color: var(--border-focus);
+   }
+   .file-label.is-error {
+      border-color: var(--border-error);
+   }
+   .file-label.is-valid {
+      border-color: rgba(0, 229, 200, 0.6);
+   }
+
+   .file-btn {
+      background: #1a2e45;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background var(--transition);
+   }
+
+   .file-label:hover .file-btn {
+      background: #1e3550;
+   }
+
+   .file-name {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+   }
+   .file-name.has-file {
+      color: var(--text-main);
+   }
+
+   /* ── Checkbox ── */
+   .checkbox-group {
+      margin-top: 0.25rem;
+   }
+
+   .checkbox-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      cursor: pointer;
+      user-select: none;
+   }
+
+   .checkbox-label input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+   }
+
+   .checkbox-custom {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      border: 2px solid var(--border);
+      border-radius: 4px;
+      background: var(--bg-input);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+   }
+
+   .checkbox-custom::after {
+      content: "";
+      width: 5px;
+      height: 9px;
+      border: 2px solid var(--bg-card);
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg) scale(0);
+      transition: transform 0.15s ease;
+      margin-bottom: 2px;
+   }
+
+   input[type="checkbox"]:checked ~ .checkbox-custom {
+      background: var(--cyan);
+      border-color: var(--cyan);
+   }
+   input[type="checkbox"]:checked ~ .checkbox-custom::after {
+      transform: rotate(45deg) scale(1);
+   }
+   input[type="checkbox"]:focus-visible ~ .checkbox-custom {
+      box-shadow: 0 0 0 3px var(--cyan-dim);
+   }
+
+   .checkbox-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+   }
+
+   .link-terms {
+      color: var(--cyan);
+      text-decoration: none;
+      transition: opacity var(--transition);
+   }
+   .link-terms:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+   }
+
+   /* ── Botón ── */
+   .btn-postular {
+      position: relative;
+      background: var(--cyan);
+      color: #060e1a;
+      border: none;
+      border-radius: var(--radius);
+      padding: 0.9rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 0.5rem;
+      letter-spacing: 0.03em;
+      transition:
+         opacity var(--transition),
+         box-shadow var(--transition),
+         transform var(--transition);
+      overflow: hidden;
+   }
+
+   .btn-postular:hover:not(:disabled) {
+      box-shadow: 0 0 20px var(--cyan-glow);
+      transform: translateY(-1px);
+   }
+
+   .btn-postular:active {
+      transform: translateY(0);
+   }
+
+   .btn-postular:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+   }
+
+   .btn-loading {
+      display: none;
+   }
+
+   .btn-postular.loading .btn-text {
+      display: none;
+   }
+   .btn-postular.loading .btn-loading {
+      display: inline;
+   }
+
+   /* ── Overlay de éxito ── */
+   .success-overlay {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+   }
+
+   .success-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+   }
+
+   .success-card {
+      text-align: center;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+   }
+
+   .success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--cyan-dim);
+      border: 2px solid var(--cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      color: var(--cyan);
+      animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+   }
+
+   @keyframes pop {
+      from {
+         transform: scale(0.5);
+         opacity: 0;
+      }
+      to {
+         transform: scale(1);
+         opacity: 1;
+      }
+   }
+
+   .success-card h3 {
+      font-size: 1.4rem;
+      color: var(--cyan);
+      margin: 0;
+   }
+
+   .success-card p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin: 0;
+      max-width: 280px;
+   }
+
+   .btn-reset {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: var(--radius);
+      padding: 0.55rem 1.25rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition:
+         border-color var(--transition),
+         color var(--transition);
+      margin-top: 0.5rem;
+   }
+
+   .btn-reset:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+   }
+</style>
+
+<script>
+   // ── Configuración ──────────────────────────────────────────────
+   // Este valor lo hereda del frontmatter; si IS_DEMO_MODE es true
+   // el formulario NO envía datos reales.
+   const IS_DEMO = document.querySelector(".demo-banner") !== null;
+
+   const MAX_FILE_MB = 5;
+   const ALLOWED_TYPES = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+   ];
+   const ALLOWED_EXTENSIONS = [".pdf", ".doc", ".docx"];
+
+   // ── Referencias DOM ────────────────────────────────────────────
+   const form = document.getElementById("postulacion-form") as HTMLFormElement;
+   const btnSubmit = document.getElementById("btn-submit") as HTMLButtonElement;
+   const fileInput = document.getElementById("cv") as HTMLInputElement;
+   const fileLabel = fileInput?.closest("label");
+   const fileDisplay = document.getElementById(
+      "file-name-display",
+   ) as HTMLSpanElement;
+   const overlay = document.getElementById("success-overlay") as HTMLElement;
+   const btnReset = document.getElementById("btn-reset") as HTMLButtonElement;
+
+   // ── Utilidades de validación ───────────────────────────────────
+   function isEmpty(val: string) {
+      return val.trim() === "";
+   }
+
+   function isValidName(val: string) {
+      return (
+         !isEmpty(val) &&
+         val.trim().length >= 2 &&
+         /^[\p{L}\s'-]+$/u.test(val.trim())
+      );
+   }
+
+   function isValidEmail(val: string) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val.trim());
+   }
+
+   function isValidPhone(val: string) {
+      // Permite +, dígitos, espacios y guiones; luego extrae solo dígitos
+      const digits = val.replace(/[\s\-().+]/g, "");
+      return /^\d{7,15}$/.test(digits);
+   }
+
+   function isValidLinkedIn(val: string) {
+      if (isEmpty(val)) return true; // Opcional
+      try {
+         const url = new URL(val.trim());
+         return url.hostname.includes("linkedin.com");
+      } catch {
+         return false;
+      }
+   }
+
+   function isValidFile(file: { name: string; size: number }) {
+      if (!file) return { ok: false, msg: "Debes adjuntar tu CV." };
+      const ext = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
+      if (!ALLOWED_EXTENSIONS.includes(ext)) {
+         return { ok: false, msg: "Solo se aceptan archivos PDF, DOC o DOCX." };
+      }
+      if (file.size > MAX_FILE_MB * 1024 * 1024) {
+         return {
+            ok: false,
+            msg: `El archivo no debe superar los ${MAX_FILE_MB} MB.`,
+         };
+      }
+      return { ok: true, msg: "" };
+   }
+
+   // ── Mostrar / limpiar errores ──────────────────────────────────
+   function setError(fieldId: string, message: string | null) {
+      const el = document.getElementById("error-" + fieldId);
+      if (el) el.textContent = message;
+
+      const input = document.getElementById(fieldId) as HTMLInputElement;
+      if (input) {
+         input.classList.toggle("is-error", !!message);
+         input.classList.toggle("is-valid", !message && !isEmpty(input.value));
+      }
+   }
+
+   function setFileError(message: string | null) {
+      const el = document.getElementById("error-cv");
+      if (el) el.textContent = message;
+      fileLabel?.classList.toggle("is-error", !!message);
+      fileLabel?.classList.toggle(
+         "is-valid",
+         !message && !!fileInput?.files?.[0],
+      );
+   }
+
+   function setTerminosError(message: string | null) {
+      const el = document.getElementById("error-terminos");
+      if (el) el.textContent = message;
+   }
+
+   // ── Validación campo a campo ───────────────────────────────────
+   function validateField(id: string) {
+      const input = document.getElementById(id) as HTMLInputElement;
+      const val = input ? input.value : "";
+
+      switch (id) {
+         case "nombres":
+            setError(
+               "nombres",
+               isEmpty(val)
+                  ? "El nombre es obligatorio."
+                  : !isValidName(val)
+                    ? "Ingresa un nombre válido (solo letras)."
+                    : "",
+            );
+            break;
+
+         case "apellidos":
+            setError(
+               "apellidos",
+               isEmpty(val)
+                  ? "El apellido es obligatorio."
+                  : !isValidName(val)
+                    ? "Ingresa un apellido válido (solo letras)."
+                    : "",
+            );
+            break;
+
+         case "correo":
+            setError(
+               "correo",
+               isEmpty(val)
+                  ? "El correo es obligatorio."
+                  : !isValidEmail(val)
+                    ? "El correo no tiene un formato válido."
+                    : "",
+            );
+            break;
+
+         case "celular":
+            setError(
+               "celular",
+               isEmpty(val)
+                  ? "El celular es obligatorio."
+                  : !isValidPhone(val)
+                    ? "Ingresa un número de teléfono válido."
+                    : "",
+            );
+            break;
+
+         case "linkedin":
+            setError(
+               "linkedin",
+               !isValidLinkedIn(val)
+                  ? "El enlace debe ser una URL de LinkedIn válida."
+                  : "",
+            );
+            break;
+      }
+   }
+
+   // ── Validación global (al submit) ──────────────────────────────
+   function validateAll() {
+      ["nombres", "apellidos", "correo", "celular", "linkedin"].forEach(
+         validateField,
+      );
+      const file = fileInput?.files?.[0];
+      const fileResult = isValidFile(file || { name: "", size: 0 });
+      // console.log(fileResult, file);
+
+      setFileError(fileResult.ok ? "" : fileResult.msg);
+
+      const terminos = document.getElementById("terminos") as HTMLInputElement;
+      setTerminosError(
+         terminos.checked ? "" : "Debes aceptar los términos para continuar.",
+      );
+
+      // ¿Hay algún error visible?
+      return document.querySelectorAll(".field-error:not(:empty)").length === 0;
+   }
+
+   // ── Feedback archivo al seleccionar ───────────────────────────
+   fileInput.addEventListener("change", () => {
+      const file = fileInput?.files?.[0];
+      if (file) {
+         fileDisplay.textContent = file.name;
+         fileDisplay.classList.add("has-file");
+         const result = isValidFile(file);
+         setFileError(result.ok ? "" : result.msg);
+      } else {
+         fileDisplay.textContent = "Ningún archivo seleccionado";
+         fileDisplay.classList.remove("has-file");
+      }
+   });
+
+   // ── Validación blur (al salir del campo) ──────────────────────
+   ["nombres", "apellidos", "correo", "celular", "linkedin"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener("blur", () => validateField(id));
+   });
+
+   // ── Submit ─────────────────────────────────────────────────────
+   form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!validateAll()) return;
+
+      // Estado de carga
+      btnSubmit.disabled = true;
+      btnSubmit.classList.add("loading");
+
+      if (IS_DEMO) {
+         // ── Modo demo: simula espera y muestra mensaje explicativo
+         await new Promise((r) => setTimeout(r, 1200));
+         showSuccess({
+            title: "¡Demo completada!",
+            message:
+               "En producción, este formulario envía los datos y el CV al equipo de RRHH. " +
+               "No se han enviado datos reales.",
+         });
+      } else {
+         // ── Producción: reemplaza esta URL con tu endpoint real
+         try {
+            const data = new FormData(form);
+            const res = await fetch("/api/postulacion", {
+               method: "POST",
+               body: data,
+            });
+            if (!res.ok) throw new Error("Server error");
+            showSuccess({
+               title: "¡Postulación enviada!",
+               message: "Nos pondremos en contacto contigo pronto.",
+            });
+         } catch {
+            alert("Ocurrió un error al enviar. Inténtalo de nuevo.");
+            btnSubmit.disabled = false;
+            btnSubmit.classList.remove("loading");
+         }
+      }
+   });
+
+   // ── Mostrar overlay éxito ──────────────────────────────────────
+   function showSuccess({ title, message } = { title: "", message: "" }) {
+      document.getElementById("success-title")!.textContent = title;
+      document.getElementById("success-message")!.textContent = message;
+      overlay.classList.add("visible");
+      overlay.removeAttribute("aria-hidden");
+   }
+
+   // ── Reset ──────────────────────────────────────────────────────
+   btnReset.addEventListener("click", () => {
+      form.reset();
+      fileDisplay.textContent = "Ningún archivo seleccionado";
+      fileDisplay.classList.remove("has-file");
+      fileLabel?.classList.remove("is-error", "is-valid");
+      document
+         .querySelectorAll(".field-error")
+         .forEach((el) => (el.textContent = ""));
+      document.querySelectorAll("input").forEach((el) => {
+         el.classList.remove("is-error", "is-valid");
+      });
+      btnSubmit.disabled = false;
+      btnSubmit.classList.remove("loading");
+      overlay.classList.remove("visible");
+      overlay.setAttribute("aria-hidden", "true");
+      // document.activeElement!.blur();
+   });
+</script>
